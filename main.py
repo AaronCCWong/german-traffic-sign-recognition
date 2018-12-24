@@ -44,7 +44,7 @@ from data import initialize_data, base_data_transforms, data_transforms, validat
 initialize_data(args.data) # extracts the zip files, makes a validation set
 
 
-if args.model == 'base' or args.model == 'deepbase':
+if args.model == 'base' or args.model == 'deepbase' or args.model == 'resnet':
     transform = base_data_transforms
     val_transform = base_data_transforms
 else:
@@ -62,11 +62,14 @@ val_loader = torch.utils.data.DataLoader(
 # We define neural net in model.py so that it can be reused by the evaluate.py script
 from base_model import BaseNet
 from deep_model import DeepNet
+from resnet_model import ResNet
 
 if args.model == 'base':
     model = BaseNet()
 elif args.model == 'deepbase':
     model = DeepNet()
+elif args.model == 'resnet':
+    model = ResNet()
 
 model.cuda()
 
