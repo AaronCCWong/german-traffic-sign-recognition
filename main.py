@@ -33,7 +33,7 @@ parser.add_argument('--seed', type=int, default=1, metavar='S',
                     help='random seed (default: 1)')
 parser.add_argument('--log-interval', type=int, default=10, metavar='N',
                     help='how many batches to wait before logging training status')
-parser.add_argument('--model', choices=['base', 'deepbase'], default='base',
+parser.add_argument('--model', choices=['base', 'deepbase', 'resnet'], default='base',
                     help='model to use (default: base')
 args = parser.parse_args()
 
