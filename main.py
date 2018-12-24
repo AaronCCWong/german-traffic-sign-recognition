@@ -44,7 +44,7 @@ from data import initialize_data, base_data_transforms, data_transforms, validat
 initialize_data(args.data) # extracts the zip files, makes a validation set
 
 
-if args.model == 'base' or args.model == 'deepbase' or args.model == 'resnet':
+if args.model == 'base' or args.model == 'deepbase':
     transform = base_data_transforms
     val_transform = base_data_transforms
 else:
