@@ -60,8 +60,14 @@ val_loader = torch.utils.data.DataLoader(
 
 ### Neural Network and Optimizer
 # We define neural net in model.py so that it can be reused by the evaluate.py script
-from model import Net
-model = Net()
+from base_model import BaseNet
+from deep_model import DeepNet
+
+if args.model == 'base':
+    model = BaseNet()
+elif args.model == 'deepbase':
+    model = DeepNet()
+
 model.cuda()
 
 optimizer = optim.RMSprop(model.parameters(), lr=args.lr,
