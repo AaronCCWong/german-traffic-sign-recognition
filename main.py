@@ -33,21 +33,29 @@ parser.add_argument('--seed', type=int, default=1, metavar='S',
                     help='random seed (default: 1)')
 parser.add_argument('--log-interval', type=int, default=10, metavar='N',
                     help='how many batches to wait before logging training status')
+parser.add_argument('--model', choices=['base', 'deepbase'], default='base',
+                    help='model to use (default: base')
 args = parser.parse_args()
 
 torch.manual_seed(args.seed)
 
 ### Data Initialization and Loading
-from data import initialize_data, data_transforms # data.py in the same folder
+from data import initialize_data, base_data_transforms, data_transforms, validation_data_transforms # data.py in the same folder
 initialize_data(args.data) # extracts the zip files, makes a validation set
 
+
+if args.model == 'base' or args.model == 'deepbase':
+    transform = base_data_transforms
+    val_transform = base_data_transforms
+else:
+    transform = data_transforms
+    val_transform = validation_data_transforms
+
 train_loader = torch.utils.data.DataLoader(
-    datasets.ImageFolder(args.data + '/train_images',
-                         transform=data_transforms),
+    datasets.ImageFolder(args.data + '/train_images', transform=transform),
     batch_size=args.batch_size, shuffle=True, num_workers=1)
 val_loader = torch.utils.data.DataLoader(
-    datasets.ImageFolder(args.data + '/val_images',
-                         transform=data_transforms),
+    datasets.ImageFolder(args.data + '/val_images', transform=val_transform),
     batch_size=args.batch_size, shuffle=False, num_workers=1)
 
 ### Neural Network and Optimizer
