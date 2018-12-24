@@ -7,7 +7,7 @@ nclasses = 43  # GTSRB as 43 classes
 
 class DeepNet(nn.Module):
     def __init__(self):
-        super(Net, self).__init__()
+        super(DeepNet, self).__init__()
         self.conv1 = nn.Conv2d(3, 32, kernel_size=3)
         self.conv2 = nn.Conv2d(32, 64, kernel_size=3)
         self.conv_bn1 = nn.BatchNorm2d(64)
