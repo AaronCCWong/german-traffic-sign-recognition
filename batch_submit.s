@@ -9,4 +9,4 @@
 
 module purge
 
-python main.py --network resnet
+python evaluate.py --network resnet --model model_25.pth
