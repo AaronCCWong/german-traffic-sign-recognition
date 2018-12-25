@@ -28,13 +28,13 @@ args = parser.parse_args()
 
 from data import base_data_transforms, validation_data_transforms
 
-if args.model == 'base':
+if args.network == 'base':
     model = BaseNet()
     transforms = base_data_transforms
-elif args.model == 'deepbase':
+elif args.network == 'deepbase':
     model = DeepNet()
     transforms = base_data_transforms
-elif args.model == 'resnet':
+elif args.network == 'resnet':
     model = ResNet()
     transforms = validation_data_transforms
 
