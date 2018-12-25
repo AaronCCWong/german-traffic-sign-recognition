@@ -33,7 +33,7 @@ parser.add_argument('--seed', type=int, default=1, metavar='S',
                     help='random seed (default: 1)')
 parser.add_argument('--log-interval', type=int, default=10, metavar='N',
                     help='how many batches to wait before logging training status')
-parser.add_argument('--model', choices=['base', 'deepbase', 'resnet'], default='base',
+parser.add_argument('--network', choices=['base', 'deepbase', 'resnet'], default='base',
                     help='model to use (default: base')
 args = parser.parse_args()
 
@@ -44,7 +44,7 @@ from data import initialize_data, base_data_transforms, data_transforms, validat
 initialize_data(args.data) # extracts the zip files, makes a validation set
 
 
-if args.model == 'base' or args.model == 'deepbase':
+if args.network == 'base' or args.network == 'deepbase':
     transform = base_data_transforms
     val_transform = base_data_transforms
 else:
@@ -64,11 +64,11 @@ from base_model import BaseNet
 from deep_model import DeepNet
 from resnet_model import ResNet
 
-if args.model == 'base':
+if args.network == 'base':
     model = BaseNet()
-elif args.model == 'deepbase':
+elif args.network == 'deepbase':
     model = DeepNet()
-elif args.model == 'resnet':
+elif args.network == 'resnet':
     model = ResNet()
 
 model.cuda()

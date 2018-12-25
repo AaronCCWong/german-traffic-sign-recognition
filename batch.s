@@ -9,4 +9,4 @@
 
 module purge
 
-python main.py --model deepbase
+python main.py --network deepbase
