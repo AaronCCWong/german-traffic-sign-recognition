@@ -1,8 +1,0 @@
-/home/aw2797/anaconda3/envs/vision/lib/python3.6/site-packages/torchvision/transforms/transforms.py:188: UserWarning: The use of the transforms.Scale transform is deprecated, please use transforms.Resize instead.
-  "please use transforms.Resize instead.")
-Traceback (most recent call last):
-  File "main.py", line 69, in <module>
-    model = DeepNet()
-  File "/scratch/aw2797/german-traffic-sign-recognition/deep_model.py", line 10, in __init__
-    super(Net, self).__init__()
-NameError: name 'Net' is not defined

@@ -10,7 +10,9 @@ import torch.nn.functional as F
 import torchvision.datasets as datasets
 
 from data import initialize_data # data.py in the same folder
-from model import Net
+from base_model import BaseNet
+from deep_model import DeepNet
+from resnet_model import ResNet
 
 parser = argparse.ArgumentParser(description='PyTorch GTSRB evaluation script')
 parser.add_argument('--data', type=str, default='data', metavar='D',
@@ -19,16 +21,27 @@ parser.add_argument('--model', type=str, metavar='M',
                     help="the model file to be evaluated. Usually it is of the form model_X.pth")
 parser.add_argument('--outfile', type=str, default='gtsrb_kaggle.csv', metavar='D',
                     help="name of the output csv file")
+parser.add_argument('--network', choices=['base', 'deepbase', 'resnet'], default='base',
+                    help='model to use (default: base')
 
 args = parser.parse_args()
 
+from data import base_data_transforms, validation_data_transforms
+
+if args.model == 'base':
+    model = BaseNet()
+    transforms = base_data_transforms
+elif args.model == 'deepbase':
+    model = DeepNet()
+    transforms = base_data_transforms
+elif args.model == 'resnet':
+    model = ResNet()
+    transforms = validation_data_transforms
+
 state_dict = torch.load(args.model)
-model = Net()
 model.load_state_dict(state_dict)
 model.eval()
 model.cuda()
-
-from data import validation_transforms
 
 test_dir = args.data + '/test_images'
 
@@ -44,7 +57,7 @@ output_file.write("Filename,ClassId\n")
 with torch.no_grad():
     for f in tqdm(os.listdir(test_dir)):
         if 'ppm' in f:
-            data = validation_transforms(pil_loader(test_dir + '/' + f))
+            data = transforms(pil_loader(test_dir + '/' + f))
             data = data.view(1, data.size(0), data.size(1), data.size(2))
             data = Variable(data).cuda()
             output = model(data)
@@ -57,6 +70,6 @@ output_file.close()
 
 print("Succesfully wrote " + args.outfile + ', you can upload this file to the kaggle '
       'competition at https://www.kaggle.com/c/nyu-cv-fall-2018/')
-        
+
 
 
