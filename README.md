@@ -1,6 +1,6 @@
 # German Traffic Sign Recognition
 
-This repo contains models that I used for the german traffic sign classification competition done as an assignment for CS-2271 at NYU. Read about it at [Medium](https://medium.com/@aaronwong_65108/traffic-sign-classification-6e7113d9c4d5).
+This repo contains models that I used for the german traffic sign classification competition done as an assignment for CS-2271 at NYU. Read about it on [Medium](https://medium.com/@aaronwong_65108/traffic-sign-classification-6e7113d9c4d5).
 
 ## Accuracy achieved using ResNet18 with data augmentation
 
