@@ -4,10 +4,7 @@ import os
 
 import torchvision.transforms as transforms
 
-# once the images are loaded, how do we pre-process them before being passed into the network
-# by default, we resize the images to 32 x 32 in size
-# and normalize them to mean = 0 and standard-deviation = 1 based on statistics collected from
-# the training set
+
 base_data_transforms = transforms.Compose([
     transforms.Resize((32, 32)),
     transforms.ToTensor(),

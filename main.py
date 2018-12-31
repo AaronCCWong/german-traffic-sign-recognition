@@ -1,5 +1,5 @@
 from __future__ import print_function
-import argparse, logging
+import argparse
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -10,12 +10,6 @@ from tensorboardX import SummaryWriter
 
 
 writer = SummaryWriter()
-logger = logging.getLogger('myapp')
-hdlr = logging.FileHandler('log')
-formatter = logging.Formatter('%(message)s')
-hdlr.setFormatter(formatter)
-logger.addHandler(hdlr)
-logger.setLevel(logging.INFO)
 
 # Training settings
 parser = argparse.ArgumentParser(description='PyTorch GTSRB example')
@@ -59,7 +53,6 @@ val_loader = torch.utils.data.DataLoader(
     batch_size=args.batch_size, shuffle=False, num_workers=1)
 
 ### Neural Network and Optimizer
-# We define neural net in model.py so that it can be reused by the evaluate.py script
 from base_model import BaseNet
 from deep_model import DeepNet
 from resnet_model import ResNet
@@ -71,7 +64,6 @@ elif args.network == 'deepbase':
 elif args.network == 'resnet':
     model = ResNet()
 
-model.load_state_dict(torch.load('model_18.pth'))
 model.cuda()
 
 optimizer = optim.RMSprop(model.parameters(), lr=args.lr,
@@ -103,8 +95,6 @@ def train(epoch):
     accuracy = float(accurate_count) / float(total_imgs)
     writer.add_scalar('Avg Loss', sum(losses) / float(len(losses)), epoch)
     writer.add_scalar('Accuracy', accuracy, epoch)
-    logger.info('Epoch: {}'.format(epoch))
-    logger.info('Training Accuracy: {}'.format(accuracy))
 
 def validation(epoch):
     model.eval()
@@ -114,8 +104,8 @@ def validation(epoch):
         for data, target in val_loader:
             data, target = Variable(data).cuda(), Variable(target).cuda()
             output = model(data)
-            validation_loss += F.nll_loss(output, target, reduction='sum').item() # sum up batch loss
-            pred = output.data.max(1, keepdim=True)[1] # get the index of the max log-probability
+            validation_loss += F.nll_loss(output, target, reduction='sum').item()
+            pred = output.data.max(1, keepdim=True)[1]
             correct += pred.eq(target.data.view_as(pred)).cpu().sum()
 
     validation_loss /= len(val_loader.dataset)
@@ -124,7 +114,6 @@ def validation(epoch):
     print('\nValidation set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
         validation_loss, correct, len(val_loader.dataset),
         100. * correct / len(val_loader.dataset)))
-    logger.info('Validation Accuracy: {:.0f}'.format(100. * correct / len(val_loader.dataset)))
 
 for epoch in range(1, args.epochs + 1):
     scheduler.step()
@@ -132,5 +121,4 @@ for epoch in range(1, args.epochs + 1):
     validation(epoch)
     model_file = 'model_' + str(epoch) + '.pth'
     torch.save(model.state_dict(), model_file)
-    print('\nSaved model to ' + model_file + '. You can run `python evaluate.py --model' + model_file + '` to generate the Kaggle formatted csv file')
 writer.close()
