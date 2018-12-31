@@ -27,8 +27,8 @@ parser.add_argument('--epochs', type=int, default=25, metavar='N',
                     help='number of epochs to train (default: 10)')
 parser.add_argument('--lr', type=float, default=1e-3, metavar='LR',
                     help='learning rate (default: 0.01)')
-parser.add_argument('--momentum', type=float, default=0.55, metavar='M',
-                    help='SGD momentum (default: 0.5)')
+parser.add_argument('--momentum', type=float, default=0.1, metavar='M',
+                    help='SGD momentum (default: 0.1)')
 parser.add_argument('--seed', type=int, default=1, metavar='S',
                     help='random seed (default: 1)')
 parser.add_argument('--log-interval', type=int, default=10, metavar='N',
@@ -71,6 +71,7 @@ elif args.network == 'deepbase':
 elif args.network == 'resnet':
     model = ResNet()
 
+model.load_state_dict(torch.load('model_18.pth'))
 model.cuda()
 
 optimizer = optim.RMSprop(model.parameters(), lr=args.lr,
